@@ -1,0 +1,12 @@
+version: "3"
+services:
+  ui:
+    image: test/1
+    environment:
+      - NUXT_S3_ENDPOINT=cdn.retherer.blog
+      - NUXT_S3_PORT=9000
+      - NUXT_S3_ACCESS_KEY=f99UxJTBe5osJMzurnEw
+      - NUXT_S3_PRIVATE_KEY=c44TIWeqVerpd1dExnfysfJExeB1u9TrFIDFk7ro
+      - NUXT_S3_BUCKET_NAME=resocial
+    ports:
+      - 9000:3000
