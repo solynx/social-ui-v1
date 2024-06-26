@@ -20,54 +20,36 @@
       </div>
       <div class="my-3">
         <div class="container w-full py-2">
-          <div class="m-1 flex flex-wrap md:-m-2">
-            <div class="flex w-1/2 flex-wrap">
-              <div class="w-1/2 p-1 md:p-2">
-                <img
-                  alt="gallery"
-                  class="block h-full w-full rounded-lg object-cover object-center"
-                  src="https://tecdn.b-cdn.net/img/Photos/Horizontal/Nature/4-col/img%20(70).webp"
+          <ClientOnly>
+            <NImageGroup>
+            <n-grid x-gap="12" :cols="3">
+              <n-gi>
+                <NImage
+                  class="carousel-img rounded"
+                  src="https://naive-ui.oss-cn-beijing.aliyuncs.com/carousel-img/carousel1.jpeg"
                 />
-              </div>
-              <div class="w-1/2 p-1 md:p-2">
-                <img
-                  alt="gallery"
-                  class="block h-full w-full rounded-lg object-cover object-center"
-                  src="https://tecdn.b-cdn.net/img/Photos/Horizontal/Nature/4-col/img%20(72).webp"
+              </n-gi>
+              <n-gi>
+                <NImage
+                  class="carousel-img rounded"
+                  src="https://naive-ui.oss-cn-beijing.aliyuncs.com/carousel-img/carousel3.jpeg"
                 />
-              </div>
-              <div class="w-full p-1 md:p-2">
-                <img
-                  alt="gallery"
-                  class="block h-full w-full rounded-lg object-cover object-center"
-                  src="https://tecdn.b-cdn.net/img/Photos/Horizontal/Nature/4-col/img%20(73).webp"
+              </n-gi>
+              <n-gi>
+                <NImage
+                  class="carousel-img rounded"
+                  src="https://naive-ui.oss-cn-beijing.aliyuncs.com/carousel-img/carousel1.jpeg"
                 />
-              </div>
-            </div>
-            <div class="flex w-1/2 flex-wrap">
-              <div class="w-full p-1 md:p-2">
-                <img
-                  alt="gallery"
-                  class="block h-full w-full rounded-lg object-cover object-center"
-                  src="https://tecdn.b-cdn.net/img/Photos/Horizontal/Nature/4-col/img%20(74).webp"
+              </n-gi>
+              <n-gi>
+                <NImage
+                  class="carousel-img rounded"
+                  src="https://naive-ui.oss-cn-beijing.aliyuncs.com/carousel-img/carousel1.jpeg"
                 />
-              </div>
-              <div class="w-1/2 p-1 md:p-2">
-                <img
-                  alt="gallery"
-                  class="block h-full w-full rounded-lg object-cover object-center"
-                  src="https://tecdn.b-cdn.net/img/Photos/Horizontal/Nature/4-col/img%20(75).webp"
-                />
-              </div>
-              <div class="w-1/2 p-1 md:p-2">
-                <img
-                  alt="gallery"
-                  class="block h-full w-full rounded-lg object-cover object-center"
-                  src="https://tecdn.b-cdn.net/img/Photos/Horizontal/Nature/4-col/img%20(77).webp"
-                />
-              </div>
-            </div>
-          </div>
+              </n-gi>
+          </n-grid>
+          </NImageGroup>
+          </ClientOnly>
         </div>
 
         <p class="mt-3">CONTENT</p>
@@ -118,6 +100,7 @@
 </template>
 
 <script setup lang="ts">
+import {NImageGroup, NImage, NCarousel, NCarouselItem, NGrid, NGi } from 'naive-ui'
 const props = defineProps(["data"]);
 import {
   EllipsisHorizontal,
@@ -129,4 +112,11 @@ import {
 } from "@vicons/ionicons5";
 </script>
 
-<style lang="scss" scoped></style>
+<style scoped>
+.carousel-img {
+  width: 100%;
+  height: 240px;
+  object-fit: cover;
+}
+</style>
+

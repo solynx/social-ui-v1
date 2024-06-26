@@ -1,7 +1,7 @@
 version: "3"
 services:
   ui:
-    image: test/1
+    image: vandoan369/my-blog-repo:uiv2 
     environment:
       - NUXT_S3_ENDPOINT=cdn.retherer.blog
       - NUXT_S3_PORT=9000
