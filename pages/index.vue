@@ -11,3 +11,8 @@
 </template>
 
 <script lang="ts" setup></script>
+<style>
+  body {
+    width: 100%;
+  }
+</style>

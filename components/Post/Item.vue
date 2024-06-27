@@ -41,12 +41,6 @@
                   src="https://naive-ui.oss-cn-beijing.aliyuncs.com/carousel-img/carousel1.jpeg"
                 />
               </n-gi>
-              <n-gi>
-                <NImage
-                  class="carousel-img rounded"
-                  src="https://naive-ui.oss-cn-beijing.aliyuncs.com/carousel-img/carousel1.jpeg"
-                />
-              </n-gi>
           </n-grid>
           </NImageGroup>
           </ClientOnly>
