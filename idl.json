@@ -5,7 +5,7 @@
     {
       "name": "createUser",
       "accounts": [
-        { "name": "newAccount", "isMut": true, "isSigner": false },
+        { "name": "userAccount", "isMut": true, "isSigner": false },
         { "name": "authority", "isMut": true, "isSigner": true },
         { "name": "systemProgram", "isMut": false, "isSigner": false }
       ],
@@ -13,22 +13,52 @@
         { "name": "name", "type": "string" },
         { "name": "avatar", "type": "string" }
       ]
+    },
+    {
+      "name": "createPost",
+      "accounts": [
+        { "name": "postAccount", "isMut": true, "isSigner": false },
+        { "name": "userAccount", "isMut": true, "isSigner": false },
+        { "name": "authority", "isMut": true, "isSigner": true },
+        { "name": "systemProgram", "isMut": false, "isSigner": false }
+      ],
+      "args": [
+        { "name": "content", "type": "string" },
+        { "name": "images", "type": { "vec": "string" } }
+      ]
     }
   ],
   "accounts": [
     {
-      "name": "NewAccount",
+      "name": "User",
       "type": {
         "kind": "struct",
         "fields": [
           { "name": "authority", "type": "publicKey" },
           { "name": "name", "type": "string" },
-          { "name": "avatar", "type": "string" }
+          { "name": "avatar", "type": "string" },
+          { "name": "postTotal", "type": "u32" },
+          { "name": "lastPostId", "type": "u32" }
+        ]
+      }
+    },
+    {
+      "name": "Post",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          { "name": "id", "type": "u32" },
+          { "name": "authority", "type": "publicKey" },
+          { "name": "content", "type": "string" },
+          { "name": "createrImage", "type": "string" },
+          { "name": "createrName", "type": "string" },
+          { "name": "images", "type": { "vec": "string" } },
+          { "name": "user", "type": "publicKey" }
         ]
       }
     }
   ],
   "metadata": {
-    "address": "Db6nhJRAjjZgRSZyLeiEJcNNLrLQu5PZfBqxHywMCwkG"
+    "address": "3QrqHGCkpJTuZVpSjCpqvxjsUNPCAuayqShKsHJqWP71"
   }
 }

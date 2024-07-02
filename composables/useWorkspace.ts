@@ -9,7 +9,7 @@ const commitment = "confirmed";
 const programID = new PublicKey(idl.metadata.address);
 export const useWorkspace = () => {
   const wallet = useAnchorWallet();
-  const connection = new Connection("http://127.0.0.1:8899", commitment);
+  const connection = new Connection(clusterApiUrl("devnet"), commitment);
   const provider = computed(
     () =>
       new AnchorProvider(connection, wallet.value, {

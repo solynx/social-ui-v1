@@ -68,11 +68,23 @@ import { useAnchorWallet, useWallet } from "solana-wallets-vue";
 import { type UploadFileInfo, useMessage } from "naive-ui";
 const { wallet, connection, provider, program } = useWorkspace();
 const accountRef = ref({ isNewAccount: false, showCreateInfo: false });
-const accountInfo = ref({ name: "", avatar: null });
+const accountInfo = reactive({ name: "", avatar: "", postId: 0 });
+const accountState = useState("user", () => accountInfo);
 const fileUpdate = ref({ listImage: {} });
 import { SystemProgram } from "@solana/web3.js";
+import { web3 } from "@project-serum/anchor";
 watch(wallet, (address) => {
+  if (!address) {
+    accountState.value = null;
+    message.success("Bye!");
+  }
   start();
+});
+watch(accountInfo, (value) => {
+  accountState.value = value;
+  if (value?.name) {
+    message.info(`Hi ${value.name}`);
+  }
 });
 const message = useMessage();
 const previewFileList = ref<UploadFileInfo[]>([]);
@@ -83,49 +95,56 @@ const start = async () => {
         [utf8.encode("user"), wallet.value.publicKey.toBuffer()],
         program.value.programId
       );
-      const user = await program.value.account.newAccount.fetch(userPda);
+      const user = await program.value.account.user.fetch(userPda);
       if (user) {
         console.log(user);
+        accountInfo.avatar = user?.avatar;
+        accountInfo.name = user?.name;
+        accountInfo.postId = user?.lastPostId;
+        accountState.value = accountInfo;
       }
     } catch (err) {
       accountRef.value.isNewAccount = true;
-      console.log(accountRef.value.isNewAccount);
     }
   }
 };
 
 const handleCreateAccount = async () => {
-  if (!accountInfo.value.name && !accountInfo.value?.avatar) {
+  if (!accountInfo.name && !accountInfo.value?.avatar) {
     return message.warning("Vui lòng điền đầy đủ thông tin");
   }
   const { data } = await useFetch("/api/s3", {
     method: "POST",
-    body: { type: accountInfo.value?.avatar?.type },
+    body: { type: accountInfo.avatar?.type },
   });
   if (!data.value?.url) {
     return message.error("Connection storage failed");
   }
   const response = await useFetch(data.value?.url, {
     method: "PUT",
-    body: accountInfo.value?.avatar as File,
+    body: accountInfo.avatar as File,
     headers: {
       "Content-Type": accountInfo.value?.avatar?.type,
       "Content-Encoding": "blob",
     },
   });
 
-  const [userPda] = await findProgramAddressSync(
-    [utf8.encode("user"), wallet.value.publicKey.toBuffer()],
+  const [userPda, _] = await findProgramAddressSync(
+    [utf8.encode("user"), wallet.value?.publicKey.toBuffer()],
     program.value.programId
   );
-  await program.value.methods
-    .createUser(accountInfo.value.name, data.value?.fileUrl)
+
+  const tx = await program.value.methods
+    .createUser(accountInfo.name, data.value?.fileUrl || "No image")
     .accounts({
       userAccount: userPda,
       authority: wallet.value?.publicKey,
-      systemProgram: SystemProgram.programId,
+      systemProgram: web3.SystemProgram.programId,
     })
     .rpc();
+  if (tx) {
+    accountInfo.avatar = data.value?.fileUrl;
+  }
 };
 const handleGetImage = (data: { file: UploadFileInfo }) => {
   const fileType = data.file.file?.type;
@@ -133,7 +152,7 @@ const handleGetImage = (data: { file: UploadFileInfo }) => {
     message.warning("File tải lên phải là ảnh");
     return false;
   }
-  accountInfo.value.avatar = data.file.file;
+  accountInfo.avatar = data.file.file;
 };
 nuxtApp.hook("page:loading:end", () => {});
 </script>
