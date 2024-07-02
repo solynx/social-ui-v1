@@ -15,6 +15,7 @@
 
 <script setup lang="ts">
 const props = defineProps(["user"]);
+const { connection, provider, program } = useWorkspace();
 </script>
 
 <style lang="scss" scoped></style>
