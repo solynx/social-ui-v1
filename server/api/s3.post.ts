@@ -4,6 +4,7 @@
 //   PutObjectCommand,
 // } from "@aws-sdk/client-s3";
 // import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
+import { v4 as uuidv4 } from 'uuid';
 import * as Minio from "minio";
 const runtimeConfig = useRuntimeConfig();
 const minioClient = new Minio.Client({
@@ -18,24 +19,26 @@ export default defineEventHandler(async (event) => {
   if (!body?.type) {
     return { url: "" };
   }
-  let fileName = Math.random() + extensionArray[body.type] || ".jpg";
+  let fileName = uuidv4() + extensionArray[body?.type as String] || ".jpg";
+
   try {
     url = await minioClient.presignedPutObject(
       runtimeConfig.s3BucketName,
       fileName,
       24 * 60
     );
+
+    return {
+      url,
+      fileUrl: `https://${runtimeConfig.s3Endpoint}/${runtimeConfig.s3BucketName}/${fileName}`,
+    };
   } catch (error) {
-    console.log(error);
     return { url: "" };
   }
-  return {
-    url,
-    fileUrl: `https://${runtimeConfig.s3Endpoint}/${runtimeConfig.s3BucketName}/${fileName}`,
-  };
+
 });
 
-const extensionArray = {
+const extensionArray : Array<String> = {
   "image/jpeg": ".jpg",
   "image/png": ".png",
   "image/gif": ".gif",

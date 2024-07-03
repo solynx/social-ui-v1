@@ -1,64 +1,219 @@
 {
-  "version": "0.1.0",
-  "name": "retherer_social",
-  "instructions": [
-    {
-      "name": "createUser",
-      "accounts": [
-        { "name": "userAccount", "isMut": true, "isSigner": false },
-        { "name": "authority", "isMut": true, "isSigner": true },
-        { "name": "systemProgram", "isMut": false, "isSigner": false }
-      ],
-      "args": [
-        { "name": "name", "type": "string" },
-        { "name": "avatar", "type": "string" }
-      ]
-    },
-    {
-      "name": "createPost",
-      "accounts": [
-        { "name": "postAccount", "isMut": true, "isSigner": false },
-        { "name": "userAccount", "isMut": true, "isSigner": false },
-        { "name": "authority", "isMut": true, "isSigner": true },
-        { "name": "systemProgram", "isMut": false, "isSigner": false }
-      ],
-      "args": [
-        { "name": "content", "type": "string" },
-        { "name": "images", "type": { "vec": "string" } }
-      ]
+    "version": "0.1.0",
+    "name": "retherer_social",
+    "instructions": [
+        {
+            "name": "createUser",
+            "accounts": [
+                {
+                    "name": "userAccount",
+                    "isMut": true,
+                    "isSigner": false
+                },
+                {
+                    "name": "authority",
+                    "isMut": true,
+                    "isSigner": true
+                },
+                {
+                    "name": "systemProgram",
+                    "isMut": false,
+                    "isSigner": false
+                }
+            ],
+            "args": [
+                {
+                    "name": "name",
+                    "type": "string"
+                },
+                {
+                    "name": "avatar",
+                    "type": "string"
+                }
+            ]
+        },
+        {
+            "name": "createPost",
+            "accounts": [
+                {
+                    "name": "postAccount",
+                    "isMut": true,
+                    "isSigner": false
+                },
+                {
+                    "name": "userAccount",
+                    "isMut": true,
+                    "isSigner": false
+                },
+                {
+                    "name": "authority",
+                    "isMut": true,
+                    "isSigner": true
+                },
+                {
+                    "name": "systemProgram",
+                    "isMut": false,
+                    "isSigner": false
+                }
+            ],
+            "args": [
+                {
+                    "name": "content",
+                    "type": "string"
+                },
+                {
+                    "name": "images",
+                    "type": {
+                        "vec": "string"
+                    }
+                }
+            ]
+        },
+        {
+            "name": "createMoment",
+            "accounts": [
+                {
+                    "name": "momentAccount",
+                    "isMut": true,
+                    "isSigner": false
+                },
+                {
+                    "name": "userAccount",
+                    "isMut": true,
+                    "isSigner": false
+                },
+                {
+                    "name": "authority",
+                    "isMut": true,
+                    "isSigner": true
+                },
+                {
+                    "name": "systemProgram",
+                    "isMut": false,
+                    "isSigner": false
+                }
+            ],
+            "args": [
+                {
+                    "name": "isType",
+                    "type": "u8"
+                },
+                {
+                    "name": "content",
+                    "type": "string"
+                }
+            ]
+        }
+    ],
+    "accounts": [
+        {
+            "name": "User",
+            "type": {
+                "kind": "struct",
+                "fields": [
+                    {
+                        "name": "authority",
+                        "type": "publicKey"
+                    },
+                    {
+                        "name": "name",
+                        "type": "string"
+                    },
+                    {
+                        "name": "avatar",
+                        "type": "string"
+                    },
+                    {
+                        "name": "postTotal",
+                        "type": "u32"
+                    },
+                    {
+                        "name": "lastPostId",
+                        "type": "u8"
+                    },
+                    {
+                        "name": "lastMomentId",
+                        "type": "u8"
+                    }
+                ]
+            }
+        },
+        {
+            "name": "Post",
+            "type": {
+                "kind": "struct",
+                "fields": [
+                    {
+                        "name": "id",
+                        "type": "u8"
+                    },
+                    {
+                        "name": "authority",
+                        "type": "publicKey"
+                    },
+                    {
+                        "name": "content",
+                        "type": "string"
+                    },
+                    {
+                        "name": "createrImage",
+                        "type": "string"
+                    },
+                    {
+                        "name": "createrName",
+                        "type": "string"
+                    },
+                    {
+                        "name": "images",
+                        "type": {
+                            "vec": "string"
+                        }
+                    },
+                    {
+                        "name": "user",
+                        "type": "publicKey"
+                    }
+                ]
+            }
+        },
+        {
+            "name": "Moment",
+            "type": {
+                "kind": "struct",
+                "fields": [
+                    {
+                        "name": "id",
+                        "type": "u8"
+                    },
+                    {
+                        "name": "authority",
+                        "type": "publicKey"
+                    },
+                    {
+                        "name": "isType",
+                        "type": "u8"
+                    },
+                    {
+                        "name": "createrImage",
+                        "type": "string"
+                    },
+                    {
+                        "name": "createrName",
+                        "type": "string"
+                    },
+                    {
+                        "name": "value",
+                        "type": "string"
+                    },
+                    {
+                        "name": "user",
+                        "type": "publicKey"
+                    }
+                ]
+            }
+        }
+    ],
+    "metadata" : {
+        "address" : "BDxKR7qWcgBparqtP6QoWJTVWWp2JiFNxmT3DbEaTQ3a"
     }
-  ],
-  "accounts": [
-    {
-      "name": "User",
-      "type": {
-        "kind": "struct",
-        "fields": [
-          { "name": "authority", "type": "publicKey" },
-          { "name": "name", "type": "string" },
-          { "name": "avatar", "type": "string" },
-          { "name": "postTotal", "type": "u32" },
-          { "name": "lastPostId", "type": "u32" }
-        ]
-      }
-    },
-    {
-      "name": "Post",
-      "type": {
-        "kind": "struct",
-        "fields": [
-          { "name": "id", "type": "u32" },
-          { "name": "authority", "type": "publicKey" },
-          { "name": "content", "type": "string" },
-          { "name": "createrImage", "type": "string" },
-          { "name": "createrName", "type": "string" },
-          { "name": "images", "type": { "vec": "string" } },
-          { "name": "user", "type": "publicKey" }
-        ]
-      }
-    }
-  ],
-  "metadata": {
-    "address": "3QrqHGCkpJTuZVpSjCpqvxjsUNPCAuayqShKsHJqWP71"
-  }
 }

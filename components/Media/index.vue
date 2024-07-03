@@ -28,7 +28,7 @@
     >
         <n-tabs type="segment" animated>
           <n-tab-pane name="oasis" tab="Hình ảnh">
-            <Cropper />
+            <Cropper :imgCrop="imageCrop"/>
           </n-tab-pane>
           <n-tab-pane name="the beatles" tab="Nội dung">
             <n-space vertical>
@@ -46,7 +46,7 @@
           </n-tab-pane>
         </n-tabs>
       <template #footer>
-        <NButton type="info">Tạo bài viêt</NButton>
+        <NButton type="info" @click="handleCreateMoment">Tạo khoảnh khắc</NButton>
       </template>
     </n-card>
     </n-modal>
@@ -80,12 +80,48 @@ const modal = reactive({
   showCreateMediaModal:false,
   showViewMedia : false
 })
+
+const imageCrop = reactive({
+  value: ''
+})
 const imageUrl =ref("")
 const data = reactive({
   content: "",
   imageUrl: ""
 })
-
+const handleCreateMoment =async () => {
+  const  presignedUrl  = await $fetch("/api/s3", {
+    method: "POST",
+    body: { type: "image/png" },
+  });
+  imageCrop.value.toBlob(async (blob) => {
+    const response =  await $fetch(presignedUrl.url, {
+    method: "PUT",
+    body: blob ,
+    headers: {
+      "Content-Type": "image/png",
+      "Content-Encoding": "blob",
+    },
+    });
+    console.log(re)
+  }, "image/png")
+  return;
+  const { data } = await $fetch("/api/s3", {
+    method: "POST",
+    body: { type: accountInfo.avatar?.type },
+  });
+  if (!data.value?.url) {
+    return message.error("Connection storage failed");
+  }
+  const response = await $fetch(data.value?.url, {
+    method: "PUT",
+    body: accountInfo.avatar as File,
+    headers: {
+      "Content-Type": accountInfo.value?.avatar?.type,
+      "Content-Encoding": "blob",
+    },
+  });
+}
 </script>
 
 <style lang="scss" scoped></style>

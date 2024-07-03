@@ -71,6 +71,7 @@ const accountRef = ref({ isNewAccount: false, showCreateInfo: false });
 const accountInfo = reactive({ name: "", avatar: "", postId: 0 });
 const accountState = useState("user", () => accountInfo);
 const fileUpdate = ref({ listImage: {} });
+const listPosts = useState("posts", () => [])
 import { SystemProgram } from "@solana/web3.js";
 import { web3 } from "@project-serum/anchor";
 watch(wallet, (address) => {
@@ -80,6 +81,10 @@ watch(wallet, (address) => {
   }
   start();
 });
+
+program.value.account.post.all().then(data => {
+        listPosts.value = data
+      })
 watch(accountInfo, (value) => {
   accountState.value = value;
   if (value?.name) {
@@ -144,6 +149,7 @@ const handleCreateAccount = async () => {
     .rpc();
   if (tx) {
     accountInfo.avatar = data.value?.fileUrl;
+    accountRef.value.showCreateInfo = !accountRef.value.showCreateInfo;
   }
 };
 const handleGetImage = (data: { file: UploadFileInfo }) => {
